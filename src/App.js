@@ -9,7 +9,7 @@ export default function App() {
   const [inWallet, setInWallet] = useState(200);
   const [selectedCat, setSelectedCat] = useState('');
 
-  const query = `products/?title=${searched }${selectedCat && `&categorySlug=` + selectedCat}`;
+  const query = `products/?title=${searched}${selectedCat && `&categorySlug=` + selectedCat}`;
 
   const { isLoading, error, products } = useProducts(searched, query);
 
@@ -75,6 +75,7 @@ export default function App() {
           />
         </ShoppingCard >
       </Main>
+      <Footer />
     </div>
   )
 }
@@ -173,20 +174,12 @@ function Products({ products, searched, onClickedProduct }) {
 function Product({ product, searched, onClickedProduct }) {
 
   return (
-    <>
-      {
-        // product.title.toLowerCase().includes(searched.toLowerCase()) ?
-        (
-          <div className="product" onClick={() => onClickedProduct(product)} title={product.slug}>
-            <img src={product.images[0]} alt={'image ' + product.title} />
-            <h3>{product.title.length > 35 ? product.title.slice(0, 35) + "..." : product.title}</h3>
-            <span className="cost">${product.price.toFixed(2)} </span>
-            <p>{product.description.slice(0, 100)}...</p>
-          </div>
-        )
-        // : ""
-      }
-    </>
+    <div className="product" onClick={() => onClickedProduct(product)} title={product.slug}>
+      <img src={product.images[0]} alt={'image ' + product.title} />
+      <h3>{product.title.length > 35 ? product.title.slice(0, 35) + "..." : product.title}</h3>
+      <span className="cost">${product.price.toFixed(2)} </span>
+      <p>{product.description.slice(0, 100)}...</p>
+    </div>
   )
 }
 
@@ -222,10 +215,10 @@ function PopUp({ product, onClickedProduct, onAddProduct }) {
         <div className="show-image">
           <button className="previous" onClick={handleSubstract} >&lsaquo;</button>
           <button className="next" onClick={handleAdd}>&rsaquo;</button>
-            {product.images.map((image, i) => <ProductImage imageIndex={image} activeImg={activeImg} num={i} key={i} />)}
-            <div className="figcaption">
-              {product.images.map((image, i) => <ImagesList image={image} onActiveImg={setActiveImg} activeImg={activeImg} num={i} key={i} />)}
-            </div>
+          {product.images.map((image, i) => <ProductImage imageIndex={image} activeImg={activeImg} num={i} key={i} />)}
+          <div className="figcaption">
+            {product.images.map((image, i) => <ImagesList image={image} onActiveImg={setActiveImg} activeImg={activeImg} num={i} key={i} />)}
+          </div>
         </div>
         <div>
           <div className="name-n-cost">
@@ -320,5 +313,13 @@ function ShoppingCardProduct({ product, onDeleteItem }) {
       </div>
       <span className="close-product" onClick={() => onDeleteItem((product.id))}>&times;</span>
     </div>
+  )
+}
+
+function Footer() {
+  return (
+    <footer>
+      <span>created by: Patryk</span>
+    </footer>
   )
 }

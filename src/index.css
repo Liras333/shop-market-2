@@ -29,6 +29,9 @@ body {
 
 .container {
     width: 100%;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
     margin: 0 auto
 }
 
@@ -96,14 +99,15 @@ main {
 
         }
 
-        .category{
-            margin-left:20px;
+        .category {
+            margin-left: 20px;
 
-            select{
-                background-color:var(--bgColor1);
+            select {
+                background-color: var(--bgColor1);
                 border: 1px solid grey;
-                color:var(--txtColor);
-                border-radius: 5px;;
+                color: var(--txtColor);
+                border-radius: 5px;
+                ;
             }
 
         }
@@ -111,16 +115,13 @@ main {
     }
 }
 
-
-
 .products {
     width: 100%;
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
     gap: 20px;
     justify-content: center;
-
-
+    margin-bottom: 15px;
 }
 
 .product {
@@ -135,8 +136,6 @@ main {
     .cost {
         align-self: start
     }
-
-
 
 
     img {
@@ -180,7 +179,7 @@ main {
     gap: 10px;
 
     .close-popup {
-        height:16px;
+        height: 16px;
         font-size: 1.7rem;
         cursor: pointer;
         font-weight: bold;
@@ -398,4 +397,20 @@ main {
 
 .button:hover {
     filter: brightness(.9);
+}
+
+footer {
+    width: 100%;
+    height: 70px;
+    margin-top: 10px;
+    background-color: var(--txtColor);
+    color: var(--bgColor1);
+    display: flex;
+    align-items: end;
+    justify-content: center;
+    margin-top: auto;
+
+    span {
+        margin: 10px;
+    }
 }
