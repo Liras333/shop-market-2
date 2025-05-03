@@ -103,7 +103,7 @@ main {
                 background-color:var(--bgColor1);
                 border: 1px solid grey;
                 color:var(--txtColor);
-                border-radius: 5px;
+                border-radius: 5px;;
             }
 
         }
@@ -171,7 +171,7 @@ main {
 
 .popup-product {
     width: 60vw;
-    height: 60vh;
+    min-height: 40vh;
     background-color: white;
     box-shadow: 0 -3px 0 10px var(--addictiveColor1);
     border-radius: 15px;
@@ -215,7 +215,7 @@ main {
         transform: translateY(-50%);
     }
 
-    figcaption {
+    .figcaption {
         display: flex;
         justify-content: center;
 
@@ -242,15 +242,17 @@ main {
 
     .show-image {
         width: 400px;
-        height: 400px;
+        min-height: 400px;
+        display: flex;
+        flex-direction: column;
         position: relative;
+
     }
 
     img {
         width: 400px;
         float: left;
         padding-right: 20px;
-        position: relative;
     }
 
     p {

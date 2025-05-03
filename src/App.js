@@ -7,12 +7,14 @@ export default function App() {
   const [clickedProduct, setClickedProduct] = useState(null);
   const [shoppingCard, setShoppingCard] = useState([]);
   const [inWallet, setInWallet] = useState(200);
-  const [selectedCat, setSelectedCat] = useState('')
+  const [selectedCat, setSelectedCat] = useState('');
 
-  const { isLoading, error, products } = useProducts(searched, `products/${selectedCat && `?categorySlug=` + selectedCat}`)
+  const query = `products/?title=${searched }${selectedCat && `&categorySlug=` + selectedCat}`;
+
+  const { isLoading, error, products } = useProducts(searched, query);
 
   function handleAddProduct(val) {
-    const product = shoppingCard.find(el => el.id === clickedProduct.id)
+    const product = shoppingCard.find(el => el.id === clickedProduct.id);
     if (!product) {
       setShoppingCard(products => [...products, val]);
       setIsClickedShoppingCad(true);
@@ -26,7 +28,7 @@ export default function App() {
 
   function handleClearShoppingCard() {
     setShoppingCard([]);
-    setIsClickedShoppingCad(false)
+    setIsClickedShoppingCad(false);
   }
 
   return (
@@ -123,9 +125,8 @@ function Main({ children }) {
 }
 
 function Search({ children, searched, onSearched, inWallet, onSelectedCat, selectedCat }) {
-  const query = `categories/`;
 
-  const { products } = useProducts(searched, query);
+  const { products: categories } = useProducts(searched, `categories/`);
 
   return (
     <div className="search">
@@ -138,7 +139,7 @@ function Search({ children, searched, onSearched, inWallet, onSelectedCat, selec
           <label>Category: </label>
           <select value={selectedCat} onChange={e => onSelectedCat(e.target.value)}>
             <option value="">All</option>
-            {products.map(el => el.id <=5 && <option key={el.slug} value={el.slug}>{el.name}</option>)}
+            {categories.map(el => el.id <= 5 && <option key={el.slug} value={el.slug}>{el.name}</option>)}
           </select>
         </div>
 
@@ -155,7 +156,9 @@ function Products({ products, searched, onClickedProduct }) {
     <section className="products">
       {products.length > 0
         ? products.map(product =>
-          product.images[0] !== 'https://placehold.co/600x400' && product.images[0].indexOf('.jfif') === -1
+          product.id !== 131
+          && product.images[0].indexOf('.jfif') === -1
+          && product.images[0].indexOf('40') === -1
           && <Product
             product={product}
             key={product.id}
@@ -172,17 +175,16 @@ function Product({ product, searched, onClickedProduct }) {
   return (
     <>
       {
-        product.title.toLowerCase().includes(searched.toLowerCase()) ?
-          (
-            <div className="product" onClick={() => onClickedProduct(product)} title={product.slug}>
-              <img src={product.images[0]} alt={'image ' + product.title} />
-
-              <h3>{product.title.length > 35 ? product.title.slice(0, 35) + "..." : product.title}</h3>
-              <span className="cost">${product.price.toFixed(2)} </span>
-              <p>{product.description.slice(0, 100)}...</p>
-            </div>
-          )
-          : ""
+        // product.title.toLowerCase().includes(searched.toLowerCase()) ?
+        (
+          <div className="product" onClick={() => onClickedProduct(product)} title={product.slug}>
+            <img src={product.images[0]} alt={'image ' + product.title} />
+            <h3>{product.title.length > 35 ? product.title.slice(0, 35) + "..." : product.title}</h3>
+            <span className="cost">${product.price.toFixed(2)} </span>
+            <p>{product.description.slice(0, 100)}...</p>
+          </div>
+        )
+        // : ""
       }
     </>
   )
@@ -220,12 +222,10 @@ function PopUp({ product, onClickedProduct, onAddProduct }) {
         <div className="show-image">
           <button className="previous" onClick={handleSubstract} >&lsaquo;</button>
           <button className="next" onClick={handleAdd}>&rsaquo;</button>
-          <div>
             {product.images.map((image, i) => <ProductImage imageIndex={image} activeImg={activeImg} num={i} key={i} />)}
-            <figcaption>
+            <div className="figcaption">
               {product.images.map((image, i) => <ImagesList image={image} onActiveImg={setActiveImg} activeImg={activeImg} num={i} key={i} />)}
-            </figcaption>
-          </div>
+            </div>
         </div>
         <div>
           <div className="name-n-cost">
