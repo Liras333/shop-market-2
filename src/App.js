@@ -12,6 +12,7 @@ export default function App() {
 
   const query = `products/?title=${searched + `&offset=${firstEl}&limit=20`}${selectedCat && `&categorySlug=` + selectedCat}`;
 
+
   const { isLoading, error, products } = useProducts(searched, query);
 
   function handleAddProduct(val) {
@@ -31,6 +32,11 @@ export default function App() {
     setShoppingCard([]);
     setIsClickedShoppingCad(false);
   }
+
+  useEffect(function(){
+    if(clickedProduct) document.querySelector('body').style.overflow = "hidden";
+    else document.querySelector('body').style.overflow = "scroll";
+  }, [clickedProduct])
 
   return (
     <div className="container">
