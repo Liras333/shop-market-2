@@ -8,8 +8,9 @@ export default function App() {
   const [shoppingCard, setShoppingCard] = useState([]);
   const [inWallet, setInWallet] = useState(200);
   const [selectedCat, setSelectedCat] = useState('');
+  const [firstEl, setFirstEl] = useState(0);
 
-  const query = `products/?title=${searched}${selectedCat && `&categorySlug=` + selectedCat}`;
+  const query = `products/?title=${searched + `&offset=${firstEl}&limit=20`}${selectedCat && `&categorySlug=` + selectedCat}`;
 
   const { isLoading, error, products } = useProducts(searched, query);
 
@@ -46,6 +47,7 @@ export default function App() {
           inWallet={inWallet}
           selectedCat={selectedCat}
           onSelectedCat={setSelectedCat}
+          setFirstEl={setFirstEl}
         >
           <ShoppingCardIcon
             onIsClickedShoppingCad={setIsClickedShoppingCad}
@@ -74,7 +76,9 @@ export default function App() {
             onDeleteItem={handleDeleteItem}
           />
         </ShoppingCard >
+        <Pagination onFirstEl={setFirstEl} firstEl={firstEl} products={products} />
       </Main>
+
       <Footer />
     </div>
   )
@@ -100,7 +104,7 @@ function Header() {
   )
 }
 
-function Button({ title, callback, pos = "right", color = "var(--txtColor)", bgColor = "var(--bgColor3)" }) {
+function Button({ title, callback, pos = "right", color = "var(--txtColor)", bgColor = "var(--bgColor3)", value = null }) {
   const styles = {
     backgroundColor: bgColor,
     color: color,
@@ -113,7 +117,7 @@ function Button({ title, callback, pos = "right", color = "var(--txtColor)", bgC
   }
 
   return (
-    <button style={styles} className="button" onClick={callback}>{title}</button>
+    <button value={value} style={styles} className="button" onClick={callback}>{title}</button>
   )
 }
 
@@ -125,9 +129,14 @@ function Main({ children }) {
   )
 }
 
-function Search({ children, searched, onSearched, inWallet, onSelectedCat, selectedCat }) {
+function Search({ children, searched, onSearched, inWallet, onSelectedCat, selectedCat, setFirstEl }) {
 
   const { products: categories } = useProducts(searched, `categories/`);
+
+  function handleCat(e) {
+    onSelectedCat(e.target.value);
+    setFirstEl(0)
+  }
 
   return (
     <div className="search">
@@ -138,7 +147,7 @@ function Search({ children, searched, onSearched, inWallet, onSelectedCat, selec
 
         <div className="category">
           <label>Category: </label>
-          <select value={selectedCat} onChange={e => onSelectedCat(e.target.value)}>
+          <select value={selectedCat} onChange={e => handleCat(e)}>
             <option value="">All</option>
             {categories.map(el => el.id <= 5 && <option key={el.slug} value={el.slug}>{el.name}</option>)}
           </select>
@@ -312,6 +321,23 @@ function ShoppingCardProduct({ product, onDeleteItem }) {
         </div>
       </div>
       <span className="close-product" onClick={() => onDeleteItem((product.id))}>&times;</span>
+    </div>
+  )
+}
+
+function Pagination({ onFirstEl }) {
+
+  function handlePage(e) {
+    onFirstEl((e.target.value))
+  }
+
+  return (
+    <div className="pagination">
+      <Button title="<" callback={() => onFirstEl(val => val - 20 >= 0 ? val - 20 : val)} />
+      <Button value={0} title="1" callback={(e) => handlePage(e)} />
+      <Button value={20} title="2" callback={(e) => handlePage(e)} />
+      <Button value={40} title="3" callback={(e) => handlePage(e)} />
+      <Button title=">" callback={() => onFirstEl(val => val + 20 <= 40  ? val + 20 : val)} />
     </div>
   )
 }

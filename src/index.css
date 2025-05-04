@@ -356,6 +356,16 @@ main {
     animation-timing-function: ease-out;
 }
 
+.pagination {
+    width:auto;
+    height:50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top:auto;
+
+}
+
 
 @keyframes shop-icon {
     0% {
