@@ -12,7 +12,6 @@ export default function App() {
 
   const query = `products/?title=${searched + `&offset=${firstEl}&limit=20`}${selectedCat && `&categorySlug=` + selectedCat}`;
 
-
   const { isLoading, error, products } = useProducts(searched, query);
 
   function handleAddProduct(val) {
@@ -35,7 +34,7 @@ export default function App() {
 
   useEffect(function(){
     if(clickedProduct) document.querySelector('body').style.overflow = "hidden";
-    else document.querySelector('body').style.overflow = "scroll";
+    else document.querySelector('body').style.overflowY = "scroll";
   }, [clickedProduct])
 
   return (
@@ -334,7 +333,7 @@ function ShoppingCardProduct({ product, onDeleteItem }) {
 function Pagination({ onFirstEl }) {
 
   function handlePage(e) {
-    onFirstEl((e.target.value))
+    onFirstEl(() => Number(e.target.value))
   }
 
   return (

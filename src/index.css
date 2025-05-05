@@ -59,6 +59,7 @@ main {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    flex-wrap: wrap;
     margin: 15px 0;
     border-radius: 15px;
     position: sticky;
@@ -381,6 +382,20 @@ main {
     }
 }
 
+@media (max-width:900px) {
+    .search > div>  input{
+        width:100px
+
+    }
+}
+
+@media (max-width:760px) {
+    .search{
+        height: 100px;
+    }
+}
+
+
 @media (max-width:690px) {
     .popup-product {
         height: 75vh;
@@ -399,6 +414,7 @@ main {
         width: 125px;
     }
 }
+
 
 .total-cost {
     margin: 0 15px 0 auto;
