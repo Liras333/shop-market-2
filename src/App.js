@@ -174,10 +174,10 @@ function Products({ products, searched, onClickedProduct }) {
           product.id !== 131
           && product.images[0].indexOf('.jfif') === -1
           && product.images[0].indexOf('40') === -1
+          && product.title.indexOf('Test') === -1
           && <Product
             product={product}
             key={product.id}
-            searched={searched}
             onClickedProduct={onClickedProduct} />)
         : <span>Not find any products</span>
       }
@@ -185,7 +185,7 @@ function Products({ products, searched, onClickedProduct }) {
   )
 }
 
-function Product({ product, searched, onClickedProduct }) {
+function Product({ product, onClickedProduct }) {
 
   return (
     <div className="product" onClick={() => onClickedProduct(product)} title={product.slug}>
@@ -252,7 +252,7 @@ function PopUp({ product, onClickedProduct, onAddProduct }) {
 function ProductImage({ imageIndex, activeImg, num }) {
   return (
     <>
-      {activeImg === num && <img src={imageIndex} alt={'image ' + imageIndex} />}
+      {activeImg === num && <img src={imageIndex} className="active-image" alt={'image ' + imageIndex} />}
     </>
   )
 }
@@ -330,7 +330,8 @@ function ShoppingCardProduct({ product, onDeleteItem }) {
   )
 }
 
-function Pagination({ onFirstEl }) {
+function Pagination({ onFirstEl,firstEl }) {
+  const [activeCard, setActiveCard] = useState(1);
 
   function handlePage(e) {
     onFirstEl(() => Number(e.target.value))
@@ -339,9 +340,10 @@ function Pagination({ onFirstEl }) {
   return (
     <div className="pagination">
       <Button title="<" callback={() => onFirstEl(val => val - 20 >= 0 ? val - 20 : val)} />
-      <Button value={0} title="1" callback={(e) => handlePage(e)} />
+      {/* <Button value={0} title="1" callback={(e) => handlePage(e)} />
       <Button value={20} title="2" callback={(e) => handlePage(e)} />
-      <Button value={40} title="3" callback={(e) => handlePage(e)} />
+      <Button value={40} title="3" callback={(e) => handlePage(e)} /> */}
+      {Array.from({length:4}, (_,i) => i + 1).map(btn => <Button value={firstEl} title={btn} callback={(e) => handlePage(e)} />)}
       <Button title=">" callback={() => onFirstEl(val => val + 20 <= 40  ? val + 20 : val)} />
     </div>
   )
